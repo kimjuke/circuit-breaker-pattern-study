@@ -1,0 +1,28 @@
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        sliding-window-size: 10              # 슬라이딩 윈도우의 크기
+        failure-rate-threshold: 50           # 실패율 -> 50%보다 크거나 같으면 OPEN 상태로 전환
+        slow-call-rate-threshold: 50         # 느린 호풀 비율 -> 50%보다 크거나 같으면 OPEN 상태로 전환
+        slow-call-duration-threshold: 5000   # 5000ms 보다 호출시간이 길면 느린 호출로 판단
+        wait-duration-in-open-state: 60000   # 60000ms 이 지나면 HALF_OPEN 상태로 변경
+        registerHealthIndicator: true
+        minimumNumberOfCalls: 5
+    instances:
+      customCircuitBreaker:
+        base-config: default
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include:
+          - "*"
+
+  health:
+    circuitbreakers:
+      enabled: true
